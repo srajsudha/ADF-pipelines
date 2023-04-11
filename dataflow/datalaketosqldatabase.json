@@ -1,0 +1,54 @@
+{
+	"name": "datalaketosqldatabase",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dummydatatxt",
+						"type": "DatasetReference"
+					},
+					"name": "dummytxtsource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dummytxtsqldatasetsink",
+						"type": "DatasetReference"
+					},
+					"name": "dummytxtsqlsink"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          firstname as string,",
+				"          salary as integer,",
+				"          gender as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> dummytxtsource",
+				"dummytxtsource sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          firstname as string,",
+				"          salary as integer,",
+				"          gender as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> dummytxtsqlsink"
+			]
+		}
+	}
+}

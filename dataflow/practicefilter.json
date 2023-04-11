@@ -1,0 +1,75 @@
+{
+	"name": "practicefilter",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "customersqlsource",
+						"type": "DatasetReference"
+					},
+					"name": "customersql"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "practicefordifferenttypes",
+						"type": "DatasetReference"
+					},
+					"name": "customersqlsink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filtertolearn",
+					"description": "Add expression for the filter"
+				},
+				{
+					"name": "derivedColumn1",
+					"description": "Created a new column , concatenating first name , last name "
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as integer,",
+				"          NameStyle as boolean,",
+				"          Title as string,",
+				"          FirstName as string,",
+				"          MiddleName as string,",
+				"          LastName as string,",
+				"          Suffix as string,",
+				"          CompanyName as string,",
+				"          SalesPerson as string,",
+				"          EmailAddress as string,",
+				"          Phone as string,",
+				"          PasswordHash as string,",
+				"          PasswordSalt as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> customersql",
+				"customersql filter(Title =='Mr.') ~> filtertolearn",
+				"filtertolearn derive(new_column = concat(FirstName,MiddleName,LastName)) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          Column_1 as string,",
+				"          Column_2 as string,",
+				"          Column_3 as string",
+				"     ),",
+				"     partitionFileNames:['customer'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> customersqlsink"
+			]
+		}
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"name": "AzureTrainingForManchesterDigital",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "a9f244c4-d229-4848-8fcd-8005425b7252",
+		"tenantId": "ccce7f5e-a35f-4bc3-8e63-b2215e7d14f9"
+	}
+}

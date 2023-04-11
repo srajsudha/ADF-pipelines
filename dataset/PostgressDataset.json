@@ -1,0 +1,17 @@
+{
+	"name": "PostgressDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "mypostgresssql",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "PostgreSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "public",
+			"table": "jaffle_shop_customers"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

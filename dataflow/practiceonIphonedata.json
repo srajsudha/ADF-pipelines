@@ -1,0 +1,82 @@
+{
+	"name": "practiceonIphonedata",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Iphonedatasource",
+						"type": "DatasetReference"
+					},
+					"name": "Iphonedatasource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "output_data",
+						"type": "DatasetReference"
+					},
+					"name": "sinktowriteIphonedata"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1",
+					"description": "Column_11'"
+				},
+				{
+					"name": "selectforreordercolumn",
+					"description": "Percentage, Number Of Ratings, Number Of Reviews, Upc, Star Rating, Ram, category'"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          {Product Name} as string,",
+				"          {Product URL} as string,",
+				"          Brand as string,",
+				"          {Sale Price} as integer,",
+				"          Mrp as integer,",
+				"          {Discount Percentage} as short,",
+				"          {Number Of Ratings} as integer,",
+				"          {Number Of Reviews} as short,",
+				"          Upc as string,",
+				"          {Star Rating} as double,",
+				"          Ram as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Iphonedatasource",
+				"Iphonedatasource derive(category = case(Mrp <= 50000,\"Normal\",",
+				"     Mrp>50000 && Mrp<=100000,\"Expensive\",",
+				"     \"Extra Expensive\")) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          {Product Name},",
+				"          {Product URL},",
+				"          Brand,",
+				"          {Sale Price},",
+				"          Mrp,",
+				"          {Discount Percentage},",
+				"          category,",
+				"          {Number Of Ratings},",
+				"          {Number Of Reviews},",
+				"          Upc,",
+				"          {Star Rating},",
+				"          Ram",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectforreordercolumn",
+				"selectforreordercolumn sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['Iphonedatasink'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sinktowriteIphonedata"
+			]
+		}
+	}
+}
