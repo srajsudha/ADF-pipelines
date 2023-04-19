@@ -61,10 +61,6 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "select * from '@{item().table_Name}'",
-										"type": "Expression"
-									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -86,7 +82,17 @@
 							"inputs": [
 								{
 									"referenceName": "table_for_copy",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"Schema_name": {
+											"value": "@item().Table_schema",
+											"type": "Expression"
+										},
+										"Table_name": {
+											"value": "@item().Table_name",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
