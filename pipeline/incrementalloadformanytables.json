@@ -163,7 +163,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"tablename": {
-											"value": "'data_src'",
+											"value": "dbo.data_src",
 											"type": "Expression"
 										}
 									}
