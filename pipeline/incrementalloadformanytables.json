@@ -60,10 +60,6 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "select * from dbo.watermarkvalue where tablename = '@{item().tablename}'",
-										"type": "Expression"
-									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -129,10 +125,6 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "select * from '@{item().tablename}' where lastModifyTime>'@{activity('Lookupforwaternark').output.firstRow.watermarkvalue}' and lastModifyTime <='@{activity('Lookupformaintable').output.firstRow.newWatermarkValue}'",
-										"type": "Expression"
-									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -155,7 +147,13 @@
 							"inputs": [
 								{
 									"referenceName": "data_src",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"table_name": {
+											"value": "@item().tablename",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
