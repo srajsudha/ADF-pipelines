@@ -1,0 +1,30 @@
+{
+	"name": "table_for_copy",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Schema_name": {
+				"type": "string"
+			},
+			"Table_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().Schema_name",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().Table_name",
+				"type": "Expression"
+			}
+		}
+	}
+}
