@@ -61,7 +61,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from watermarktable where table_name = '@item().tablename'",
+										"value": "select * from watermarktable where table_name = '@{item().tablename}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
