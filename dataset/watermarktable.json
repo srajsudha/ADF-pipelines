@@ -18,6 +18,9 @@
 				"precision": 23,
 				"scale": 3
 			}
-		]
+		],
+		"typeProperties": {
+			"schema": "dbo"
+		}
 	}
 }
