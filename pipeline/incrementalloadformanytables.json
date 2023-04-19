@@ -163,7 +163,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"tablename": {
-											"value": "@activity('Lookupforwaternark').output.firstRow.tablename",
+											"value": "'data_src'",
 											"type": "Expression"
 										}
 									}
