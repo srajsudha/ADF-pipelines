@@ -41,7 +41,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookupforwaternark').output.values",
+						"value": "@activity('Lookupforwaternark').output.value",
 						"type": "Expression"
 					},
 					"activities": [
@@ -89,7 +89,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select max(lastModifyTime) as newWatermarkValue from '@item().tablename'",
+										"value": "select max(lastModifyTime) as newWatermarkValue from '@{item().tablename}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
