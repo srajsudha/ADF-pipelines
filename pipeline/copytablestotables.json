@@ -86,13 +86,7 @@
 							"inputs": [
 								{
 									"referenceName": "table_for_copy",
-									"type": "DatasetReference",
-									"parameters": {
-										"table_name": {
-											"value": "@item().table_name",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
@@ -101,7 +95,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"schema_name": {
-											"value": "@item().schema_name",
+											"value": "@item().Table_schema",
 											"type": "Expression"
 										},
 										"table_name": {
