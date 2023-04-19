@@ -61,14 +61,14 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from watermarktable where table_name = '@{item().tablename}'",
+										"value": "select * from dbo.watermarkvalue where tablename = '@{item().tablename}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
 								"dataset": {
-									"referenceName": "watermarktable",
+									"referenceName": "watermarktablelookup",
 									"type": "DatasetReference"
 								}
 							}
