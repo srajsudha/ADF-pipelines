@@ -74,7 +74,7 @@
 							}
 						},
 						{
-							"name": "Lookup3",
+							"name": "watermarktable",
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
@@ -99,7 +99,7 @@
 									"referenceName": "watermarktable",
 									"type": "DatasetReference"
 								},
-								"firstRowOnly": false
+								"firstRowOnly": true
 							}
 						},
 						{
@@ -107,7 +107,7 @@
 							"type": "Copy",
 							"dependsOn": [
 								{
-									"activity": "Lookup3",
+									"activity": "watermarktable",
 									"dependencyConditions": [
 										"Succeeded"
 									]
