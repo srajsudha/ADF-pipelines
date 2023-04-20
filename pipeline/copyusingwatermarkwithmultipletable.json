@@ -141,7 +141,10 @@
 									"type": "AzureSqlSink",
 									"writeBehavior": "upsert",
 									"upsertSettings": {
-										"useTempDB": true
+										"useTempDB": true,
+										"keys": [
+											"ID"
+										]
 									},
 									"sqlWriterUseTableLock": false,
 									"disableMetricsCollection": false
