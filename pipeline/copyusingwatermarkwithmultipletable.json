@@ -131,7 +131,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('select * from',' ',item().tablename,' ','where lastModifyTime >','2023-04-19T00:00:00.0000000')",
+										"value": "select * from @{item().tablename} where \nlastModifyTime>'@{activity('Lookup3').output.firstRow.watermarkvalue}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
