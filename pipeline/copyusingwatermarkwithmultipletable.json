@@ -131,7 +131,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().tablename}",
+										"value": "select * from @{item().tablename} where lastModifyTime>'@{activity('Lookup2').output.firstRow.newwatermark}' ",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
