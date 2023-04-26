@@ -38,7 +38,7 @@
 				"     enableCdc: true,",
 				"     mode: 'read',",
 				"     skipInitialLoad: false,",
-				"     waterMarkColumn: 'id',",
+				"     waterMarkColumn: 'last_modified',",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> source1",
 				"source1 alterRow(upsertIf(true())) ~> alterRow1",
