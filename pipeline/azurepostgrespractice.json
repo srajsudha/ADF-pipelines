@@ -1,0 +1,35 @@
+{
+	"name": "azurepostgrespractice",
+	"properties": {
+		"activities": [
+			{
+				"name": "postgresspractice",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "postgrespractice",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine",
+					"continuationSettings": {
+						"customizedCheckpointKey": "2d521393-71b9-44bb-a730-a8a19b80e4dd"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
