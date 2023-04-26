@@ -30,7 +30,7 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: (concat('select * from ',$table_name,'where lastModifyTime >',$last_update_value)),",
+				"     query: (concat('select * from ',$table_name,' where lastModifyTime >','2023-04-18 00:00:00.000')),",
 				"     format: 'query') ~> source1",
 				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
