@@ -15,6 +15,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzurePostgreSql1'"
 		},
+		"AzurePostgreSql2fortarget_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzurePostgreSql2fortarget'"
+		},
 		"AzureSqlDatabase_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabase'"
@@ -2050,8 +2054,8 @@
 													}
 												},
 												"sink1": {
-													"table_name": {
-														"value": "@concat(item().table_name,'_sink')",
+													"sink_name": {
+														"value": "@item().table_name",
 														"type": "Expression"
 													}
 												}
@@ -2936,6 +2940,35 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzurePostgreSql1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzurePostgreSqlsink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzurePostgreSql2fortarget",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"sink_name": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzurePostgreSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "public",
+					"table": {
+						"value": "@dataset().sink_name",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzurePostgreSql2fortarget')]"
 			]
 		},
 		{
@@ -4099,6 +4132,19 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/AzurePostgreSql2fortarget')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzurePostgreSql",
+				"typeProperties": {
+					"connectionString": "[parameters('AzurePostgreSql2fortarget_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabase')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -4434,7 +4480,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "postgresdynamicdatasink",
+								"referenceName": "AzurePostgreSqlsink",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -4480,7 +4526,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Postgredynamicsource')]",
-				"[concat(variables('factoryId'), '/datasets/postgresdynamicdatasink')]"
+				"[concat(variables('factoryId'), '/datasets/AzurePostgreSqlsink')]"
 			]
 		},
 		{

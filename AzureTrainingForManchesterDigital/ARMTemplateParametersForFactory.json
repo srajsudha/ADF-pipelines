@@ -11,6 +11,9 @@
 		"AzurePostgreSql1_connectionString": {
 			"value": ""
 		},
+		"AzurePostgreSql2fortarget_connectionString": {
+			"value": ""
+		},
 		"AzureSqlDatabase_connectionString": {
 			"value": ""
 		},
