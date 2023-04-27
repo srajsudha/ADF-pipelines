@@ -91,6 +91,10 @@
 										"source_table_name": {
 											"value": "'@{item().table_name}'",
 											"type": "Expression"
+										},
+										"upsert_column_name": {
+											"value": "'@{item().upsert_column}'",
+											"type": "Expression"
 										}
 									}
 								},
@@ -98,7 +102,10 @@
 									"coreCount": 8,
 									"computeType": "General"
 								},
-								"traceLevel": "Fine"
+								"traceLevel": "Fine",
+								"continuationSettings": {
+									"customizedCheckpointKey": "d489f258-78e6-4ed4-bb8b-fe4428f2cd13"
+								}
 							}
 						}
 					]
