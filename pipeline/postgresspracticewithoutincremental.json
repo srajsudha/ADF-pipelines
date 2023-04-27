@@ -60,6 +60,16 @@
 								"dataflow": {
 									"referenceName": "withoutincrementalcolumn",
 									"type": "DataFlowReference",
+									"parameters": {
+										"source_table": {
+											"value": "'@{item().table_name}'",
+											"type": "Expression"
+										},
+										"target_table": {
+											"value": "'@{item().table_name}'",
+											"type": "Expression"
+										}
+									},
 									"datasetParameters": {
 										"source1": {
 											"source_table_name": {
