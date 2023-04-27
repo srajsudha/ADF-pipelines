@@ -76,6 +76,12 @@
 												"value": "@item().table_name",
 												"type": "Expression"
 											}
+										},
+										"sink1": {
+											"sink_name": {
+												"value": "@item().table_name",
+												"type": "Expression"
+											}
 										}
 									}
 								},
