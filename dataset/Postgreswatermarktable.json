@@ -2,7 +2,7 @@
 	"name": "Postgreswatermarktable",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzurePostgreSql1",
+			"referenceName": "AzurePostgreSql2fortarget",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
