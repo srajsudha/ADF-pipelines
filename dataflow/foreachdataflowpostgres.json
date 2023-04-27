@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "postgresdynamicdatasink",
+						"referenceName": "AzurePostgreSqlsink",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
