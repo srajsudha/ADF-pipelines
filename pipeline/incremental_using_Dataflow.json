@@ -1,5 +1,5 @@
 {
-	"name": "copyusingwatermarkwithmultipletable",
+	"name": "incremental_using_Dataflow",
 	"properties": {
 		"activities": [
 			{
@@ -45,6 +45,53 @@
 						"type": "Expression"
 					},
 					"activities": [
+						{
+							"name": "Data flow1",
+							"type": "ExecuteDataFlow",
+							"dependsOn": [
+								{
+									"activity": "Lookup2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "watermarktable",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"dataflow": {
+									"referenceName": "dataflow2",
+									"type": "DataFlowReference",
+									"parameters": {
+										"table_name": {
+											"value": "'@{item().tablename}'",
+											"type": "Expression"
+										},
+										"last_update_value": {
+											"value": "'@{activity('watermarktable').output.firstRow.watermarkvalue}'",
+											"type": "Expression"
+										}
+									}
+								},
+								"compute": {
+									"coreCount": 8,
+									"computeType": "General"
+								},
+								"traceLevel": "Fine"
+							}
+						},
 						{
 							"name": "Lookup2",
 							"type": "Lookup",
@@ -98,85 +145,8 @@
 								"dataset": {
 									"referenceName": "watermarktable",
 									"type": "DatasetReference"
-								},
-								"firstRowOnly": true
+								}
 							}
-						},
-						{
-							"name": "Copy data1",
-							"type": "Copy",
-							"dependsOn": [
-								{
-									"activity": "watermarktable",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "Lookup2",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "select * from @{item().tablename} where lastModifyTime>'@{activity('watermarktable').output.firstRow.watermarkvalue}' and lastModifyTime<='@{activity('Lookup2').output.firstRow.newwatermark}'",
-										"type": "Expression"
-									},
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"sink": {
-									"type": "AzureSqlSink",
-									"writeBehavior": "upsert",
-									"upsertSettings": {
-										"useTempDB": true,
-										"keys": [
-											"ID"
-										]
-									},
-									"sqlWriterUseTableLock": false,
-									"disableMetricsCollection": false
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"typeConversion": true,
-									"typeConversionSettings": {
-										"allowDataTruncation": true,
-										"treatBooleanAsNumber": false
-									}
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "table_for_source",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "sink_for_learning",
-									"type": "DatasetReference",
-									"parameters": {
-										"table_name": {
-											"value": "@item().tablename",
-											"type": "Expression"
-										}
-									}
-								}
-							]
 						}
 					]
 				}
