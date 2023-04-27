@@ -76,12 +76,6 @@
 												"value": "@item().table_name",
 												"type": "Expression"
 											}
-										},
-										"sink1": {
-											"table_name": {
-												"value": "@item().table_name",
-												"type": "Expression"
-											}
 										}
 									}
 								},
