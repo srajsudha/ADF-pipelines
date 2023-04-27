@@ -69,6 +69,14 @@
 											"value": "'@{item().upsert_column}'",
 											"type": "Expression"
 										}
+									},
+									"datasetParameters": {
+										"source1": {
+											"source_table_name": "data_table_1"
+										},
+										"sink1": {
+											"table_name": "data_table_1_sink"
+										}
 									}
 								},
 								"compute": {
