@@ -72,10 +72,16 @@
 									},
 									"datasetParameters": {
 										"source1": {
-											"source_table_name": "data_table_1"
+											"source_table_name": {
+												"value": "@item().table_name",
+												"type": "Expression"
+											}
 										},
 										"sink1": {
-											"table_name": "data_table_1_sink"
+											"table_name": {
+												"value": "@concat(item().table_name,'_sink')",
+												"type": "Expression"
+											}
 										}
 									}
 								},
