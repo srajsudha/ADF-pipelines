@@ -36,7 +36,7 @@
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     query: (\"select * from {$source_table}\"),",
+				"     query: (\"select * from {$source_table} where last_modified >'{$upsert_column}'\"),",
 				"     format: 'query') ~> source1",
 				"source1 alterRow(upsertIf(true())) ~> alterRow1",
 				"alterRow1 sink(allowSchemaDrift: true,",
