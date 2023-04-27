@@ -48,6 +48,7 @@
 				"     upsertable:true,",
 				"     keys:[($upsert_column)],",
 				"     format: 'table',",
+				"     postSQLs:[(\"update public.watermark_table set watermark_value = '{$new_watermark_value}' where table_name = '{$source_table}'\")],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
