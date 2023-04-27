@@ -68,6 +68,10 @@
 										"target_table": {
 											"value": "'@{item().table_name}'",
 											"type": "Expression"
+										},
+										"upsert_column": {
+											"value": "'@{item().upsert_column}'",
+											"type": "Expression"
 										}
 									},
 									"datasetParameters": {
