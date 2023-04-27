@@ -47,7 +47,14 @@
 						{
 							"name": "Data flow without incremental column",
 							"type": "ExecuteDataFlow",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Lookupmaintablefornewvalue",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -76,6 +83,10 @@
 										"watermark_value": {
 											"value": "'@{item().watermark_value}'",
 											"type": "Expression"
+										},
+										"new_watermark_value": {
+											"value": "'@{activity('Lookupmaintablefornewvalue').output.firstRow.new_watermark}'",
+											"type": "Expression"
 										}
 									},
 									"datasetParameters": {
@@ -98,6 +109,39 @@
 									"computeType": "General"
 								},
 								"traceLevel": "Fine"
+							}
+						},
+						{
+							"name": "Lookupmaintablefornewvalue",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzurePostgreSqlSource",
+									"query": {
+										"value": "select max(last_modified) as new_watermark from @{item().table_name}",
+										"type": "Expression"
+									},
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "Postgredynamicsource",
+									"type": "DatasetReference",
+									"parameters": {
+										"source_table_name": {
+											"value": "@item().table_name",
+											"type": "Expression"
+										}
+									}
+								}
 							}
 						}
 					]
