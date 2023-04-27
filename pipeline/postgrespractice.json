@@ -78,8 +78,8 @@
 											}
 										},
 										"sink1": {
-											"table_name": {
-												"value": "@concat(item().table_name,'_sink')",
+											"sink_name": {
+												"value": "@item().table_name",
 												"type": "Expression"
 											}
 										}

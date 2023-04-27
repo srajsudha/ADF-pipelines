@@ -1,0 +1,24 @@
+{
+	"name": "AzurePostgreSqlsink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql2fortarget",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"sink_name": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "public",
+			"table": {
+				"value": "@dataset().sink_name",
+				"type": "Expression"
+			}
+		}
+	}
+}
