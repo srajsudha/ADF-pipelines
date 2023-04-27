@@ -83,6 +83,14 @@
 											"value": "'@{activity('watermarktable').output.firstRow.watermarkvalue}'",
 											"type": "Expression"
 										}
+									},
+									"datasetParameters": {
+										"sink1": {
+											"table_name": {
+												"value": "@item().tablename",
+												"type": "Expression"
+											}
+										}
 									}
 								},
 								"compute": {
