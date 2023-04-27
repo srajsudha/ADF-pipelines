@@ -72,6 +72,10 @@
 										"upsert_column": {
 											"value": "'@{item().upsert_column}'",
 											"type": "Expression"
+										},
+										"watermark_value": {
+											"value": "'@{item().watermark_value}'",
+											"type": "Expression"
 										}
 									},
 									"datasetParameters": {
