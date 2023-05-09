@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "postgresdatatable1"
+				},
+				{
+					"dataset": {
+						"referenceName": "postgrestargetdata_table_1",
+						"type": "DatasetReference"
+					},
+					"name": "targettable"
 				}
 			],
 			"sinks": [
@@ -19,20 +26,86 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinktargetpostgres"
+				},
+				{
+					"dataset": {
+						"referenceName": "postgrestargetdata_table_1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
 				}
 			],
 			"transformations": [
 				{
 					"name": "derivedColumnstatus"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "lookupexistingvalue"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "alterRow1"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          last_modified as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     query: (\"select * from public.data_table_1 where last_modified>'2023-01-08 00:00:00'\"),",
 				"     format: 'query') ~> postgresdatatable1",
+				"source(output(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          last_modified as timestamp,",
+				"          status as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> targettable",
 				"postgresdatatable1 derive(status = 1) ~> derivedColumnstatus",
+				"targettable select(mapColumn(",
+				"          id_target = id,",
+				"          cus_name_target = cus_name,",
+				"          age_target = age,",
+				"          last_modified_target = last_modified,",
+				"          status",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"postgresdatatable1, select1 lookup(id == id_target,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookupexistingvalue",
+				"lookupexistingvalue filter(!isNull(id_target)) ~> filter1",
+				"filter1 select(mapColumn(",
+				"          id,",
+				"          cus_name,",
+				"          age,",
+				"          last_modified,",
+				"          status",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 derive(status = 0) ~> derivedColumn1",
+				"derivedColumn1 alterRow(updateIf(true())) ~> alterRow1",
 				"derivedColumnstatus sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -48,7 +121,26 @@
 				"     upsertable:false,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sinktargetpostgres"
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2) ~> sinktargetpostgres",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          last_modified as timestamp,",
+				"          status as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['id'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1) ~> sink1"
 			]
 		}
 	}
