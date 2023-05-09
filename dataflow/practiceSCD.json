@@ -1,0 +1,60 @@
+{
+	"name": "practiceSCD",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "postgres_data_table_1",
+						"type": "DatasetReference"
+					},
+					"name": "postgresdatatable1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "postgrestargetdata_table_1",
+						"type": "DatasetReference"
+					},
+					"name": "sinktargetpostgres"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumnstatus"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          last_modified as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> postgresdatatable1",
+				"postgresdatatable1 derive(status = 1) ~> derivedColumnstatus",
+				"derivedColumnstatus sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          last_modified as timestamp,",
+				"          status as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinktargetpostgres"
+			]
+		}
+	}
+}
