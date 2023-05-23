@@ -1,0 +1,89 @@
+{
+	"name": "SCD_type_2_practice",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_data_table_1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_data_table_1_target",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "sourceselect"
+				},
+				{
+					"name": "exists1"
+				},
+				{
+					"name": "targetselect"
+				},
+				{
+					"name": "activefilter"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          last_modified as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          start_date as string,",
+				"          end_date as string,",
+				"          is_active as string,",
+				"          surrogate_key as string,",
+				"          last_modified as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source1 select(mapColumn(",
+				"          id_source = id,",
+				"          cus_name_source = cus_name,",
+				"          age_source = age,",
+				"          last_modified_source = last_modified",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sourceselect",
+				"sourceselect, targetselect exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     negate:true,",
+				"     broadcast: 'auto')~> exists1",
+				"activefilter select(mapColumn(",
+				"          id_target = id,",
+				"          cus_name_target = cus_name,",
+				"          age_target = age,",
+				"          start_date_target = start_date,",
+				"          end_date_target = end_date,",
+				"          is_active_target = is_active,",
+				"          surrogate_key_target = surrogate_key,",
+				"          last_modified_target = last_modified",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> targetselect",
+				"source2 filter(is_active=='1') ~> activefilter"
+			]
+		}
+	}
+}

@@ -1,0 +1,65 @@
+{
+	"name": "ds_data_table_1_target",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzurePostgreSql2fortarget",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzurePostgreSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "cus_name",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "age",
+				"type": "integer",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "start_date",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "end_date",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "is_active",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "surrogate_key",
+				"type": "text",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "last_modified",
+				"type": "timestamp without time zone",
+				"precision": 0,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "public",
+			"table": "data_table_1"
+		}
+	}
+}
