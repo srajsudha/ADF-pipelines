@@ -19,7 +19,22 @@
 					"name": "source2"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_data_table_1_target",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_data_table_1_target",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
 			"transformations": [
 				{
 					"name": "sourceselect"
@@ -32,6 +47,27 @@
 				},
 				{
 					"name": "activefilter"
+				},
+				{
+					"name": "derivedColumnfortarget"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "surrogateKey1"
+				},
+				{
+					"name": "exists2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "alterRow1"
 				}
 			],
 			"scriptLines": [
@@ -67,7 +103,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sourceselect",
-				"sourceselect, targetselect exists(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"sourceselect, targetselect exists(id_source == id_target,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
 				"activefilter select(mapColumn(",
@@ -82,7 +118,91 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> targetselect",
-				"source2 filter(is_active=='1') ~> activefilter"
+				"source2 filter(is_active=='Y') ~> activefilter",
+				"exists1 derive(end_date = toDate('2999-12-31'),",
+				"          is_active = \"Y\",",
+				"          start_date = last_modified_source) ~> derivedColumnfortarget",
+				"derivedColumnfortarget select(mapColumn(",
+				"          id = id_source,",
+				"          cus_name = cus_name_source,",
+				"          age = age_source,",
+				"          last_modified = last_modified_source,",
+				"          end_date,",
+				"          is_active,",
+				"          start_date",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 keyGenerate(output(surrogate_key as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey1",
+				"targetselect, sourceselect exists(id_target == id_source,",
+				"     negate:false,",
+				"     broadcast: 'auto')~> exists2",
+				"exists2 derive(end_date = toDate(currentUTC()),",
+				"          is_active = \"N\") ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          id = id_target,",
+				"          cus_name = cus_name_target,",
+				"          age = age_target,",
+				"          start_date = start_date_target,",
+				"          surrogate_key = surrogate_key_target,",
+				"          last_modified = last_modified_target,",
+				"          end_date,",
+				"          is_active",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 alterRow(updateIf(true())) ~> alterRow1",
+				"surrogateKey1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          start_date as string,",
+				"          end_date as string,",
+				"          is_active as string,",
+				"          surrogate_key as string,",
+				"          last_modified as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          id,",
+				"          cus_name,",
+				"          age,",
+				"          start_date,",
+				"          end_date,",
+				"          is_active,",
+				"          surrogate_key,",
+				"          last_modified",
+				"     )) ~> sink1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as integer,",
+				"          cus_name as string,",
+				"          age as integer,",
+				"          start_date as string,",
+				"          end_date as string,",
+				"          is_active as string,",
+				"          surrogate_key as string,",
+				"          last_modified as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['id'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink2"
 			]
 		}
 	}
