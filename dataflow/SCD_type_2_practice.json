@@ -68,6 +68,12 @@
 				},
 				{
 					"name": "alterRow1"
+				},
+				{
+					"name": "sourceHash"
+				},
+				{
+					"name": "targethash"
 				}
 			],
 			"scriptLines": [
@@ -103,7 +109,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sourceselect",
-				"sourceselect, targetselect exists(id_source == id_target,",
+				"sourceHash, targethash exists(sourcehash == target_hash,",
 				"     negate:true,",
 				"     broadcast: 'auto')~> exists1",
 				"activefilter select(mapColumn(",
@@ -136,7 +142,7 @@
 				"select1 keyGenerate(output(surrogate_key as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"targetselect, sourceselect exists(id_target == id_source,",
+				"targethash, sourceselect exists(id_target == id_source,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> exists2",
 				"exists2 derive(end_date = toDate(currentUTC()),",
@@ -154,6 +160,8 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select2 alterRow(updateIf(true())) ~> alterRow1",
+				"sourceselect derive(sourcehash = md5(id_source,cus_name_source,age_source)) ~> sourceHash",
+				"targetselect derive(target_hash = md5(id_target,cus_name_target,age_target)) ~> targethash",
 				"surrogateKey1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
