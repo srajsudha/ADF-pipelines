@@ -142,7 +142,7 @@
 				"select1 keyGenerate(output(surrogate_key as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"targethash, sourceHash exists(age_source!=age_target,",
+				"targethash, sourceHash exists(targethash@target_hash == sourceHash@age_source,",
 				"     negate:false,",
 				"     broadcast: 'auto')~> exists2",
 				"exists2 derive(end_date = toDate(currentUTC()),",
