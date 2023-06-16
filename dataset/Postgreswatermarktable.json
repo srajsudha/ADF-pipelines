@@ -31,5 +31,6 @@
 			"schema": "public",
 			"table": "watermark_table"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

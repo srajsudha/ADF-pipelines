@@ -103,6 +103,8 @@
 		"folder": {
 			"name": "MetadataDrivenCopyTask_3lx_20230419"
 		},
-		"annotations": []
-	}
+		"annotations": [],
+		"lastPublishTime": "2023-04-19T19:01:38Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
 }

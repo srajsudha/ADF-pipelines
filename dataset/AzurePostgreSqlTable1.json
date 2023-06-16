@@ -12,5 +12,6 @@
 			"schema": "public",
 			"table": "data_table_1"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

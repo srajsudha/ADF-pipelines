@@ -37,5 +37,6 @@
 			"schema": "public",
 			"table": "data_table_1_sink"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
