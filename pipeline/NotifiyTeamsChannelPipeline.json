@@ -36,7 +36,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"url": "@pipeline().parameters.teamWebhookUrl",
+					"url": {
+						"value": "@pipeline().parameters.teamWebhookUrl",
+						"type": "Expression"
+					},
 					"method": "POST",
 					"body": "@json(variables('messageCard'))"
 				}
