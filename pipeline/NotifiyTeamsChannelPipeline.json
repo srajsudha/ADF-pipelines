@@ -1,6 +1,70 @@
 {
 	"name": "NotifiyTeamsChannelPipeline",
 	"properties": {
+		"activities": [
+			{
+				"name": "Set JSON schema",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "messageCard",
+					"value": "{\n    \"@type\": \"MessageCard\",\n    \"@context\": \"http://schema.org/extensions\",\n    \"themeColor\": \"0076D7\",\n    \"summary\": \"Pipeline status alert message​​​​\",\n    \"sections\": [\n        {\n            \"activityTitle\": \"Pipeline execution alert​​​​\",\n            \"facts\": [\n                {\n                    \"name\": \"Subscription Id:\",\n                    \"value\": \"@{pipeline().parameters.subscription}\"\n                },\n                {\n                    \"name\": \"Resource Group:\",\n                    \"value\": \"@{pipeline().parameters.resourceGroup}\"\n                },\n                {\n                    \"name\": \"Data Factory Name:\",\n                    \"value\": \"@{pipeline().DataFactory}\"\n                },\n                {\n                    \"name\": \"Pipeline RunId:\",\n                    \"value\": \"@{pipeline().parameters.runId}\"\n                },\n                {\n                    \"name\": \"Pipline Name:\",\n                    \"value\": \"@{pipeline().parameters.name}\"\n                },\n                {\n                    \"name\": \"Pipeline Status:\",\n                    \"value\": \"@{pipeline().parameters.status}\"\n                },\n                {\n                    \"name\": \"Execution Start Time (UTC):\",\n                    \"value\": \"@{pipeline().parameters.triggerTime}\"\n                },\n                {\n                    \"name\": \"Execution Finish Time (UTC):\",\n                    \"value\": \"@{pipeline().parameters.executionEndTime}\"\n                },\n                {\n                    \"name\": \"Execution Duration (s):\",\n                    \"value\": \"@{pipeline().parameters.runDuration}\"\n                },\n                {\n                    \"name\": \"Message:\",\n                    \"value\": \"@{pipeline().parameters.message}\"\n                },\n                {\n                    \"name\": \"Notification Time (UTC):\",\n                    \"value\": \"@{utcnow()}\"\n                }\n            ],\n            \"markdown\": true\n        }\n    ],\n    \"potentialAction\": [\n        {\n            \"@type\": \"OpenUri\",\n            \"name\": \"View pipeline run\",\n            \"targets\": [\n                {\n                    \"os\": \"default\",\n                    \"uri\": \"@{concat('https://synapse.azure.com/monitoring/pipelineruns/',pipeline().parameters.runId,'?factory=/subscriptions/',pipeline().parameters.subscription,'/resourceGroups/',pipeline().parameters.resourceGroup,'/providers/Microsoft.DataFactory/factories/',pipeline().DataFactory)}\"\n                }\n            ]\n        }\n    ]\n}"
+				}
+			},
+			{
+				"name": "Invoke Teams Webhook Url",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Set JSON schema",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "@pipeline().parameters.teamWebhookUrl",
+					"method": "POST",
+					"body": "@json(variables('messageCard'))"
+				}
+			}
+		],
+		"parameters": {
+			"subscription": {
+				"type": "string",
+				"defaultValue": "ZGM10062 - Azure Training sura"
+			},
+			"resourceGroup": {
+				"type": "string",
+				"defaultValue": "AzureTraining"
+			},
+			"runId": {
+				"type": "string",
+				"defaultValue": "@activity('NotifiyTeamsChannelPipeline').output['pipelineRunId']"
+			},
+			"teamWebhookUrl": {
+				"type": "string",
+				"defaultValue": "https://zuhlke.webhook.office.com/webhookb2/96466d6e-4fc7-4df5-98ca-b597c3fc45ea@ccce7f5e-a35f-4bc3-8e63-b2215e7d14f9/IncomingWebhook/911be117731a4158a5f2fabc6d360b16/3854a038-9ea0-44a5-befa-a8f4a2d4f8fd"
+			}
+		},
+		"variables": {
+			"messageCard": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
