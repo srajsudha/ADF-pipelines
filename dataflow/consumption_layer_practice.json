@@ -1,0 +1,40 @@
+{
+	"name": "consumption_layer_practice",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "deal_with_pricing",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          deal_id as long,",
+				"          deal_status as string,",
+				"          line_of_business as string,",
+				"          type_of_business as string,",
+				"          oe as string,",
+				"          valid_from as date,",
+				"          valid_to as date,",
+				"          is_active as boolean,",
+				"          figure_category as string,",
+				"          figure_name as string,",
+				"          pricing_type as string,",
+				"          figure_value as decimal(0,0),",
+				"          deal_last_modified as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1"
+			]
+		}
+	}
+}
