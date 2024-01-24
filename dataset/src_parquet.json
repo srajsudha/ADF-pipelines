@@ -1,0 +1,68 @@
+{
+	"name": "src_parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "parquetprocessing"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "model",
+				"type": "UTF8"
+			},
+			{
+				"name": "mpg",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "cyl",
+				"type": "INT_32"
+			},
+			{
+				"name": "disp",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "hp",
+				"type": "INT_32"
+			},
+			{
+				"name": "drat",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "wt",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "qsec",
+				"type": "DOUBLE"
+			},
+			{
+				"name": "vs",
+				"type": "INT_32"
+			},
+			{
+				"name": "am",
+				"type": "INT_32"
+			},
+			{
+				"name": "gear",
+				"type": "INT_32"
+			},
+			{
+				"name": "carb",
+				"type": "INT_32"
+			}
+		]
+	}
+}
