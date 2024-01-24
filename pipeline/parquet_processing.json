@@ -1,0 +1,9 @@
+{
+	"name": "parquet_processing",
+	"properties": {
+		"folder": {
+			"name": "Parquetprocessing"
+		},
+		"annotations": []
+	}
+}
