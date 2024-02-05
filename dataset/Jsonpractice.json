@@ -1,0 +1,32 @@
+{
+	"name": "Jsonpractice",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "case.json",
+				"fileSystem": "jsondata"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"EnqueuedTimeUtc": {
+					"type": "string"
+				},
+				"EventName": {
+					"type": "string"
+				},
+				"Payload": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
