@@ -1,0 +1,83 @@
+{
+	"name": "Jsontest1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "test copy.json",
+				"fileSystem": "jsondata"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"ucvId": {
+					"type": "string"
+				},
+				"financialRisk": {
+					"type": "null"
+				},
+				"worksMainlyWith": {
+					"type": "object",
+					"properties": {
+						"description": {
+							"type": "string"
+						},
+						"localCode": {
+							"type": "string"
+						}
+					}
+				},
+				"namely": {
+					"type": "object",
+					"properties": {
+						"partyId": {
+							"type": "string"
+						},
+						"locatedAt": {
+							"type": "object",
+							"properties": {
+								"streetNo": {
+									"type": "string"
+								},
+								"addressLine2": {
+									"type": "null"
+								},
+								"zipCode": {
+									"type": "string"
+								},
+								"city": {
+									"type": "string"
+								},
+								"state": {
+									"type": "null"
+								},
+								"country": {
+									"type": "string"
+								},
+								"municipality": {
+									"type": "null"
+								},
+								"addressStatus": {
+									"type": "null"
+								}
+							}
+						},
+						"name": {
+							"type": "string"
+						},
+						"companyType": {
+							"type": "null"
+						}
+					}
+				}
+			}
+		}
+	}
+}
