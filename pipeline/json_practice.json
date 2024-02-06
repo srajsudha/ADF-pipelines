@@ -1,0 +1,198 @@
+{
+	"name": "json_practice",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['ucvId']"
+								},
+								"sink": {
+									"name": "ucvId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['financialRisk']"
+								},
+								"sink": {
+									"name": "financialRisk",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['worksMainlyWith']['description']"
+								},
+								"sink": {
+									"name": "description",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['worksMainlyWith']['localCode']"
+								},
+								"sink": {
+									"name": "localCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['partyId']"
+								},
+								"sink": {
+									"name": "partyId",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['streetNo']"
+								},
+								"sink": {
+									"name": "streetNo",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['addressLine2']"
+								},
+								"sink": {
+									"name": "addressLine2",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['zipCode']"
+								},
+								"sink": {
+									"name": "zipCode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['city']"
+								},
+								"sink": {
+									"name": "city",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['state']"
+								},
+								"sink": {
+									"name": "state",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['country']"
+								},
+								"sink": {
+									"name": "country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['municipality']"
+								},
+								"sink": {
+									"name": "municipality",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['locatedAt']['addressStatus']"
+								},
+								"sink": {
+									"name": "addressStatus",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['namely']['companyType']"
+								},
+								"sink": {
+									"name": "companyType",
+									"type": "String"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Jsontest1",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "tgt_csv_test",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
