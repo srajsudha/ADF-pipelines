@@ -1,0 +1,9 @@
+{
+	"name": "sudhanshudatafactorydeloiite",
+	"location": "uksouth",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "28732380-80d3-4b10-aad1-e0dd8e60cfd7",
+		"tenantId": "36da45f1-dd2c-4d1f-af13-5abe46b99921"
+	}
+}
